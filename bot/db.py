@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, func
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean, func
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy_utils import database_exists, create_database
 
@@ -23,13 +23,16 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     created_at = Column(DateTime, default=func.now())
+    is_active = Column(Boolean, default=True)
+
+
 
 class Pair(Base):
     __tablename__ = 'pairs'
-
     id = Column(Integer, primary_key=True)
     user1_id = Column(Integer)
     user2_id = Column(Integer)
+    number_of_meeting = Column(Integer, autoincrement=True)
     created_at = Column(DateTime, default=func.now())
 
 

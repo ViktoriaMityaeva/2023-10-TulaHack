@@ -22,5 +22,15 @@ def add_pair(user1_id, user2_id):
     session.add(new_pair)
     session.commit()
 
+def active_user(telegram_id):
+    user = session.query(db.User).filter_by(telegram_id=telegram_id).first()
+    user.is_active = True
+    session.commit()
+
+def disactive_user(telegram_id):
+    user = session.query(db.User).filter_by(telegram_id=telegram_id).first()
+    user.is_active = False
+    session.commit()
+
 Session = sessionmaker(bind=db.engine)
 session = Session()
