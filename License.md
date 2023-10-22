@@ -1,4 +1,4 @@
-Copyright (c) 2023 viktoriamityaeva, sofiyafil
+Copyright (c) 2023 Mitiaeva Viktoriia, Sofiya Filina
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

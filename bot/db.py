@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, func
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy_utils import database_exists, create_database
 
@@ -13,16 +13,27 @@ engine_string = f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOS
 engine = create_engine(url=engine_string)
 
 Base = declarative_base()
-print(Base.metadata.tables.keys())
+
 class User(Base):
     __tablename__ = 'users'
+
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    usename = Column(String)
+    telegram_id = Column(Integer, unique=True)
+    username = Column(String)
+    first_name = Column(String)
+    last_name = Column(String)
+    created_at = Column(DateTime, default=func.now())
+
+class Pair(Base):
+    __tablename__ = 'pairs'
+
+    id = Column(Integer, primary_key=True)
+    user1_id = Column(Integer)
+    user2_id = Column(Integer)
+    created_at = Column(DateTime, default=func.now())
+
 
 if __name__ == '__main__':
-    print('checking...')
     if not database_exists(engine.url):
-        print('Not existing')
         create_database(engine.url)
     Base.metadata.create_all(engine, checkfirst=True)
