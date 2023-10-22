@@ -60,21 +60,21 @@ def handle_pair(message):
 @bot.callback_query_handler(func=lambda call: True)
 def handle_menu_selection(call):
     user = db_services.get_user_by_tg_id(call.message.chat.id)
-    print(call.message.chat.id)
-    print(user)
     if user:
         option_selected = call.data
         if option_selected == 'Random coffe':
             # Handle option 1
             db_services.active_user(call.message.chat.id)
-            bot.edit_message_text(call.message.chat.id,  'Ты в Random coffe, ожидай уведомления ✨', message_id=call.message.message_id)
+            bot.edit_message_text(chat_id=call.message.chat.id,  text='Ты в Random coffe, ожидай уведомления ✨', message_id=call.message.message_id)
         elif option_selected == 'График встреч':
-            bot.edit_message_text(call.message.chat.id, 'График встреч: ✨', message_id=call.message.message_id,)
+            bot.edit_message_text(chat_id=call.message.chat.id, text='График встреч: ✨', message_id=call.message.message_id,)
         elif option_selected == 'Отключиться':
             db_services.disactive_user(call.message.chat.id)
-            bot.edit_message_text(call.message.chat.id, 'Вы больше не участвуете в random coffe', message_id=call.message.message_id,)
-        elif option_selected == 'Отчёты прошлых встреч':
-            bot.edit_message_text(call.message.chat.id, 'Пока что вы не были ни на одной встречи :(', message_id=call.message.message_id,)
+            bot.edit_message_text(chat_id=call.message.chat.id, text='Вы больше не участвуете в random coffe', message_id=call.message.message_id,)
+        elif option_selected == 'Статистика прошлых встреч':
+            bot.edit_message_text(chat_id=call.message.chat.id, text='Вы не были ни на одной встречи :(', message_id=call.message.message_id,)
+        elif option_selected == 'Управление локациями':
+            bot.edit_message_text(chat_id=call.message.chat.id, text='Доступных локаций нет', message_id=call.message.message_id,)
     else:
         bot.reply_to(call.message, "Ты не зарегистрирован. Напиши /register")
 
