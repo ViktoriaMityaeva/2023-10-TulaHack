@@ -1,0 +1,52 @@
+version: '3.7'
+
+services:
+  redis:
+    image: redis:alpine
+    command:
+      - redis-server
+    restart: on-failure
+    ports:
+      - 6379:6379
+    
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: coffeedb
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    command: sh -c "python3 db.py && python3 bot.py"
+    restart: always
+    depends_on:
+      - db
+      - redis
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: coffeedb
+      BOT_TOKEN: сюда токен
+
+  worker:
+    build:
+      context: ./bot
+    restart: always
+    command: sh -c "celery -A bot_tasks worker --loglevel=info"
+    depends_on:
+      - redis
+      - bot
+
+volumes:
+  postgres-data:
